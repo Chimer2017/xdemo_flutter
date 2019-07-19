@@ -12,10 +12,25 @@ class InfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: <Widget>[
+      //       DrawerHeader(
+      //         child: Text("Filters"),
+      //         decoration: BoxDecoration(
+      //           color: Colors.blue,
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       appBar: AppBar(
         title: Text('More Info'),
       ),
-      body: Card(
+      
+      body: SingleChildScrollView(
+        child: Card(
         child: Center(
           child: Column(
             children: <Widget>[
@@ -28,7 +43,14 @@ class InfoScreen extends StatelessWidget {
                   width: 150.0,
                   child: Text("Watch Now",textAlign: TextAlign.center),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    child: AlertDialog(
+                      title: Text("STREAMING NOW"),
+                    ),
+                  );
+                },
               ),
               RaisedButton(
 
@@ -53,6 +75,9 @@ class InfoScreen extends StatelessWidget {
 
         ),
       ),
+      ),
+
+      
 
     );
   }
