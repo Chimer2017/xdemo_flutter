@@ -1,11 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'widgets/Movie.dart';
-class InfoScreen extends StatelessWidget {
+
+class InfoScreen extends StatefulWidget {
+
+  Movie movie;
+
+  InfoScreen(Movie movie) {
+    this.movie = movie;
+  }
+
+  @override
+  InfoScreenState createState() => InfoScreenState(this.movie);
+  
+
+}
+
+class InfoScreenState extends State<InfoScreen> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat',fontSize:20.0, color: Colors.black, );
 
 
-  InfoScreen(Movie movie) {
+  InfoScreenState(Movie movie) {
     this.movie = movie;
   }
   @override
@@ -63,11 +78,21 @@ class InfoScreen extends StatelessWidget {
                       // textDirection: TextDirection.rtl,
                       children: <Widget>[
                         Text("Save for Later"),
-                        Icon(Icons.star),
+                        Icon(
+                          Icons.star,
+                          color: this.movie.savedForLater ? Colors.amber[600] : Colors.black,
+                        ),
                       ],
                     ),
                   ),
-                onPressed: () {},
+                onPressed: () {
+                  this.movie.saveForLater();
+                  setState(() {
+                    
+                  });
+                  
+
+                },
               ),
 
             ],

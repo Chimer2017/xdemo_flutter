@@ -20,12 +20,32 @@ class Collection {
       this.movies.add(newMovie);
     }
 
+
+  }
+
+  List<Movie> getMovies() {
+    return this.movies;
+  }
+
+  List<Movie> getSavedMovies() {
+    List<Movie> temp = new List<Movie>();
+    for ( var i = 0; i < movies.length; i++)
+    {
+      if (movies[i].savedForLater) {
+        temp.add(movies[i]);
+      }
+    }
+
+    return temp;
+    
   }
 
   
   // ----------------Fields-----------------
 
   List<Movie> movies = new List();
+
+  
 
 
 
