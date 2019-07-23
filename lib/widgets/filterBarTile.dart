@@ -40,7 +40,7 @@ class FilterBarTileState extends State<FilterBarTile> {
           width: 100,
           height: 30,
           child: ListTile(
-            contentPadding: EdgeInsets.all(3.0),
+            // contentPadding: EdgeInsets.all(3.0),
             title: Text(this.filter,textAlign: TextAlign.left,),
             trailing: Icon(Icons.close),
 

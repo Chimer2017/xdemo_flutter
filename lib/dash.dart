@@ -1,7 +1,9 @@
 import 'dart:core';
+import 'dart:core' as prefix0;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:xdemo_mobile_example/widgets/FilterTile.dart';
 import 'package:xdemo_mobile_example/widgets/filterBarTile.dart';
 
 import 'dart:async';
@@ -33,24 +35,63 @@ class Table extends StatefulWidget {
   TableState createState() => TableState();
 }
 
-class TableState extends State<Table> with TickerProviderStateMixin {
+class TableState extends State<Table> {
   bool tableDisplayAll = true;
-
   Future<Collection> movies = fetchCollection();
-
   List<Movie> allMovies;
   List<Movie> saveMovies;
   List<Movie> superSaveMovies = new List();
-
   bool firstLoadStatus = true;
-
+  List<String> ratings = ["G","PG","PG13","R","NR"];
+  List<String> genres = ['Romantic Comedy','Action','Thriller',"Horror",'Comedy','Drama','Sci-Fi','Music Video','Martial Arts','Animation','Fantasy'];
   List<FilterBarTile> myFilters = <FilterBarTile>[];
+  List<FilterTile> genreFilters = <FilterTile>[];
+  List<FilterTile> ratingFilters = <FilterTile>[];
+
+  TableState() {
+    fillFilters(this.genres,"genre",this.genreFilters);
+    fillFilters(this.ratings,"rating", this.ratingFilters);
+  }
+  
+
+  _updateTableState(String qry) {
+    setState(() {
+      //myFilters.add(new FilterBarTile(filter));
+      movies = fetchFilteredCollection(qry);
+
+      Navigator.pop(context);
+    });
+  }
+
+  void fillFilters(List<String> options,String type,List<FilterTile> filterList) {
+    options.forEach((f) {
+      filterList.add(new FilterTile(filter: f, qryFilter: "$type = '$f'",parentAction: _updateTableState));
+      print("$type = '$f'");
+    }); 
+    
+
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    fillFilters(this.genres,"genre",this.genreFilters);
+    fillFilters(this.ratings,"rating", this.ratingFilters);
+
     return Scaffold(
       appBar: AppBar(
         // automaticallyImplyLeading: false,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.filter_list),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            );
+          },
+        ),
         title: Text("MVoovies"),
         bottom: tableDisplayAll
             ? PreferredSize(
@@ -59,12 +100,11 @@ class TableState extends State<Table> with TickerProviderStateMixin {
                   height: 40,
                   width: MediaQuery.of(context).size.width,
                   child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: myFilters,
+                    scrollDirection: Axis.horizontal,
+                    children: myFilters,
+                  ),
                 ),
 
-                ),
-                
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   children: myFilters,
@@ -157,96 +197,12 @@ class TableState extends State<Table> with TickerProviderStateMixin {
             ),
             ExpansionTile(
               title: Text("Rating"),
-              children: <Widget>[
-                ListTile(
-                  title: Text("G"),
-                  onTap: () {
-                    myFilters.add(new FilterBarTile('"G"'));
-                    movies = fetchFilteredCollection('rating = "G"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("PG"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "PG"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("PG-13"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "PG13"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("R"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "R"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("Not Rated"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "NR"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
+              children:this.ratingFilters,
             ),
             ExpansionTile(
               title: Text("Genre"),
-              children: <Widget>[
-                ListTile(
-                  title: Text("G"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "R"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("PG"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "R"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("PG-13"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "R"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("R"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "R"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: Text("Not Rated"),
-                  onTap: () {
-                    movies = fetchFilteredCollection('rating = "R"');
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
+               children: this.genreFilters,
             ),
-            Genre(movies),
           ],
         ),
       ),

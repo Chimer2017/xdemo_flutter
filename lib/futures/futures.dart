@@ -31,6 +31,7 @@ Future<Collection> fetchFilteredCollection(String query) async {
   final response = await http.get(
       'http://den-vm-eng142.rocketsoftware.com:7171/Xdemo/Products?select=' + query,
       headers: {'authorization': basicAuth});
+  print('http://den-vm-eng142.rocketsoftware.com:7171/Xdemo/Products?select=' + query);
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON.
     print(response.statusCode);

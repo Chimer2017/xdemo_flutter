@@ -4,6 +4,7 @@ import 'Collection.dart';
 
 class Genre extends StatefulWidget {
 
+  
   Future<Collection> movies;
   Genre(Future<Collection> movies) {
     this.movies = movies;
