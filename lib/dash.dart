@@ -4,6 +4,7 @@ import 'dart:core' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:xdemo_mobile_example/widgets/FilterTile.dart';
+import 'package:xdemo_mobile_example/widgets/Search.dart';
 import 'package:xdemo_mobile_example/widgets/filterBarTile.dart';
 
 import 'dart:async';
@@ -42,17 +43,29 @@ class TableState extends State<Table> {
   List<Movie> saveMovies;
   List<Movie> superSaveMovies = new List();
   bool firstLoadStatus = true;
-  List<String> ratings = ["G","PG","PG13","R","NR"];
-  List<String> genres = ['Romantic Comedy','Action','Thriller',"Horror",'Comedy','Drama','Sci-Fi','Music Video','Martial Arts','Animation','Fantasy'];
+  List<String> ratings = ["G", "PG", "PG13", "R", "NR"];
+  List<String> genres = [
+    'Romantic Comedy',
+    'Action',
+    'Thriller',
+    "Horror",
+    'Comedy',
+    'Drama',
+    'Sci-Fi',
+    'Music Video',
+    'Martial Arts',
+    'Animation',
+    'Fantasy'
+  ];
   List<FilterBarTile> myFilters = <FilterBarTile>[];
   List<FilterTile> genreFilters = <FilterTile>[];
   List<FilterTile> ratingFilters = <FilterTile>[];
+  TextEditingController controller = TextEditingController();
 
   TableState() {
-    fillFilters(this.genres,"genre",this.genreFilters);
-    fillFilters(this.ratings,"rating", this.ratingFilters);
+    fillFilters(this.genres, "genre", this.genreFilters);
+    fillFilters(this.ratings, "rating", this.ratingFilters);
   }
-  
 
   _updateTableState(String qry) {
     setState(() {
@@ -63,23 +76,39 @@ class TableState extends State<Table> {
     });
   }
 
-  void fillFilters(List<String> options,String type,List<FilterTile> filterList) {
+  void fillFilters(List<String> options, String type, List<FilterTile> filterList) {
     options.forEach((f) {
-      filterList.add(new FilterTile(filter: f, qryFilter: "$type = '$f'",parentAction: _updateTableState));
-      print("$type = '$f'");
-    }); 
-    
-
+      filterList.add(new FilterTile(
+          filter: f,
+          qryFilter: "$type = '$f'",
+          parentAction: _updateTableState));
+    });
   }
 
 
+  void filterSearchResults(String query) {
+  List<Movie> dummySearchList = List<Movie>();
+  dummySearchList.addAll(this.allMovies);
+  if(query.isNotEmpty) {
+    List<Movie> dummyListData = List<Movie>();
+    dummySearchList.forEach((item) {
+      if(item.title.contains(query)) {
+        dummyListData.add(item);
+      }
+    });
+    setState(() {
+      this.allMovies.clear();
+      this.allMovies.addAll(dummyListData);
+    });
+    return;
+  } else {
+    setState(() {
 
-
-
+    });
+  }
+}
   @override
   Widget build(BuildContext context) {
-    fillFilters(this.genres,"genre",this.genreFilters);
-    fillFilters(this.ratings,"rating", this.ratingFilters);
 
     return Scaffold(
       appBar: AppBar(
@@ -93,27 +122,28 @@ class TableState extends State<Table> {
           },
         ),
         title: Text("MVoovies"),
-        bottom: tableDisplayAll
-            ? PreferredSize(
-                preferredSize: Size.fromHeight(48.0),
-                child: SizedBox(
-                  height: 40,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: myFilters,
-                  ),
-                ),
+        // bottom: tableDisplayAll
+        //     ? PreferredSize(
+                
+        //         preferredSize: Size.fromHeight(48.0),
+        //         child: SizedBox(
+                  
+        //           height: 55,
+        //           width: MediaQuery.of(context).size.width - 10,
+        //           child: Search(
+        //             controller: this.controller,
+        //           ),
+        //         ),
 
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: myFilters,
-                // ),
-              )
-            : PreferredSize(
-                preferredSize: Size.fromHeight(0),
-                child: Container(),
-              ),
+        //         // Row(
+        //         //   mainAxisAlignment: MainAxisAlignment.center,
+        //         //   children: myFilters,
+        //         // ),
+        //       )
+        //     : PreferredSize(
+        //         preferredSize: Size.fromHeight(0),
+        //         child: Container(),
+        //       ),
       ),
       body: Center(
           child: tableDisplayAll
@@ -168,23 +198,32 @@ class TableState extends State<Table> {
                     print("B");
                     return CircularProgressIndicator();
                   })
-              : ListView.builder(
-                  itemCount: this.superSaveMovies.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(superSaveMovies[index].title),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    InfoScreen(superSaveMovies[index])),
-                          );
-                        },
-                      ),
-                    );
-                  })),
+              : this.superSaveMovies.isEmpty
+                  ? Text(
+                      "No Movies Saved Yet",
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          ),
+                    )
+                  : ListView.builder(
+                      itemCount: this.superSaveMovies.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(superSaveMovies[index].title),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InfoScreen(superSaveMovies[index])),
+                              );
+                            },
+                          ),
+                        );
+                      })),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -197,11 +236,11 @@ class TableState extends State<Table> {
             ),
             ExpansionTile(
               title: Text("Rating"),
-              children:this.ratingFilters,
+              children: this.ratingFilters,
             ),
             ExpansionTile(
               title: Text("Genre"),
-               children: this.genreFilters,
+              children: this.genreFilters,
             ),
           ],
         ),
