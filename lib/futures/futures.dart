@@ -10,7 +10,7 @@ Future<Collection> fetchCollection() async {
   String basicAuth =
       'Basic ' + base64Encode(utf8.encode('$username:$password'));
   final response = await http.get(
-      'http://den-vm-eng142.rocketsoftware.com:7171/Xdemo/Products?max=20',
+      'http://den-vm-eng142.rocketsoftware.com:7171/Xdemo/Products?max=100',
       headers: {'authorization': basicAuth});
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON.

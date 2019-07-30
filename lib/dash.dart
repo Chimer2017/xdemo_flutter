@@ -13,7 +13,7 @@ import 'widgets/Collection.dart';
 import 'Info.dart';
 import 'widgets/filterBarTile.dart';
 import 'futures/futures.dart';
-import 'widgets/Genre.dart';
+import 'widgets/Search.dart';
 
 class DashBoardLayout extends StatelessWidget {
   @override
@@ -61,6 +61,26 @@ class TableState extends State<Table> {
   List<FilterTile> genreFilters = <FilterTile>[];
   List<FilterTile> ratingFilters = <FilterTile>[];
   TextEditingController controller = TextEditingController();
+  List<String> currentFilters = new List<String>();
+  String searchFilter;
+
+  @override
+  void initState() {
+    controller.addListener(() {
+      setState(() {
+        searchFilter = controller.text.toLowerCase();
+        print("state reload");
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Search search = new Search();
 
   TableState() {
     fillFilters(this.genres, "genre", this.genreFilters);
@@ -68,15 +88,25 @@ class TableState extends State<Table> {
   }
 
   _updateTableState(String qry) {
+    currentFilters.add(qry);
+    // Next we are going to build the qry
+    var temp = "";
+    for (int i = 0; i < currentFilters.length - 1; i++) {
+      temp += currentFilters[i] + " AND ";
+    }
+    temp += currentFilters[currentFilters.length - 1];
+    print(temp);
+
     setState(() {
       //myFilters.add(new FilterBarTile(filter));
-      movies = fetchFilteredCollection(qry);
+      movies = fetchFilteredCollection(temp);
 
       Navigator.pop(context);
     });
   }
 
-  void fillFilters(List<String> options, String type, List<FilterTile> filterList) {
+  void fillFilters(
+      List<String> options, String type, List<FilterTile> filterList) {
     options.forEach((f) {
       filterList.add(new FilterTile(
           filter: f,
@@ -85,31 +115,28 @@ class TableState extends State<Table> {
     });
   }
 
-
   void filterSearchResults(String query) {
-  List<Movie> dummySearchList = List<Movie>();
-  dummySearchList.addAll(this.allMovies);
-  if(query.isNotEmpty) {
-    List<Movie> dummyListData = List<Movie>();
-    dummySearchList.forEach((item) {
-      if(item.title.contains(query)) {
-        dummyListData.add(item);
-      }
-    });
-    setState(() {
-      this.allMovies.clear();
-      this.allMovies.addAll(dummyListData);
-    });
-    return;
-  } else {
-    setState(() {
-
-    });
+    List<Movie> dummySearchList = List<Movie>();
+    dummySearchList.addAll(this.allMovies);
+    if (query.isNotEmpty) {
+      List<Movie> dummyListData = List<Movie>();
+      dummySearchList.forEach((item) {
+        if (item.title.contains(query)) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        this.allMovies.clear();
+        this.allMovies.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {});
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         // automaticallyImplyLeading: false,
@@ -122,116 +149,171 @@ class TableState extends State<Table> {
           },
         ),
         title: Text("MVoovies"),
-        // bottom: tableDisplayAll
-        //     ? PreferredSize(
-                
-        //         preferredSize: Size.fromHeight(48.0),
-        //         child: SizedBox(
-                  
-        //           height: 55,
-        //           width: MediaQuery.of(context).size.width - 10,
-        //           child: Search(
-        //             controller: this.controller,
-        //           ),
-        //         ),
-
-        //         // Row(
-        //         //   mainAxisAlignment: MainAxisAlignment.center,
-        //         //   children: myFilters,
-        //         // ),
-        //       )
-        //     : PreferredSize(
-        //         preferredSize: Size.fromHeight(0),
-        //         child: Container(),
-        //       ),
       ),
-      body: Center(
-          child: tableDisplayAll
-              ? FutureBuilder<Collection>(
-                  future: this.movies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      this.allMovies = snapshot.data.getMovies();
-                      this.saveMovies = snapshot.data.getSavedMovies();
-                      for (var i = 0; i < saveMovies.length; i++) {
-                        if (!this
-                            .superSaveMovies
-                            .contains(this.saveMovies[i])) {
-                          this.superSaveMovies.add(this.saveMovies[i]);
-                        }
-                      }
+      body: Column(
+        children: <Widget>[
+          //   Expanded(
+          //   child: search,
+          //   // new Search(
+          //   //   items: allMovies,
+          //   // ),
+          // ),
+          new TextField(
+            decoration: new InputDecoration(labelText: "Search a movie!"),
+            controller: controller,
+          ),
+          Expanded(
+            // height: 60,
+            child: Center(
+                child: tableDisplayAll
+                    ? FutureBuilder<Collection>(
+                        future: this.movies,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            this.allMovies = snapshot.data.getMovies();
+                            this.saveMovies = snapshot.data.getSavedMovies();
+                            for (var i = 0; i < saveMovies.length; i++) {
+                              if (!this
+                                  .superSaveMovies
+                                  .contains(this.saveMovies[i])) {
+                                this.superSaveMovies.add(this.saveMovies[i]);
+                              }
+                            }
 
-                      return ListView.builder(
-                        itemCount: snapshot.data.movies.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                              child: ListTile(
-                            title: Text(
-                              snapshot.data.movies[index].title.toString(),
-                              textAlign: TextAlign.left,
+                            return ListView.builder(
+                              itemCount: snapshot.data.movies.length,
+                              itemBuilder: (context, index) {
+                                return searchFilter == null ||
+                                        searchFilter == ""
+                                    ? Card(
+                                        child: ListTile(
+                                        title: Text(
+                                          snapshot.data.movies[index].title
+                                              .toString(),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        //subtitle: Text(snapshot.data.movies[index].studio.toString()),
+                                        trailing: snapshot.data.movies[index]
+                                                .rating.isNotEmpty
+                                            ? Text(
+                                                snapshot
+                                                    .data.movies[index].rating
+                                                    .toString(),
+                                                textAlign: TextAlign.right)
+                                            : Text(
+                                                "NR",
+                                                textAlign: TextAlign.right,
+                                              ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    InfoScreen(snapshot
+                                                        .data.movies[index])),
+                                          );
+                                        },
+                                      ))
+                                    : snapshot.data.movies[index]
+                                            .getTitle()
+                                            .toLowerCase()
+                                            .contains(searchFilter)
+                                        ? new Card(
+                                            child: ListTile(
+                                            title: Text(
+                                              snapshot.data.movies[index].title
+                                                  .toString(),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                            //subtitle: Text(snapshot.data.movies[index].studio.toString()),
+                                            trailing: snapshot
+                                                    .data
+                                                    .movies[index]
+                                                    .rating
+                                                    .isNotEmpty
+                                                ? Text(
+                                                    snapshot.data.movies[index]
+                                                        .rating
+                                                        .toString(),
+                                                    textAlign: TextAlign.right)
+                                                : Text(
+                                                    "NR",
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        InfoScreen(snapshot.data
+                                                            .movies[index])),
+                                              );
+                                            },
+                                          ))
+                                        : new Container();
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("Failure");
+                          }
+                          print("B");
+                          return CircularProgressIndicator();
+                        })
+                    : this.superSaveMovies.isEmpty
+                        ? Text(
+                            "No Movies Saved Yet",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
-                            //subtitle: Text(snapshot.data.movies[index].studio.toString()),
-                            trailing:
-                                snapshot.data.movies[index].rating.isNotEmpty
-                                    ? Text(
-                                        snapshot.data.movies[index].rating
-                                            .toString(),
-                                        textAlign: TextAlign.right)
-                                    : Text(
-                                        "NR",
-                                        textAlign: TextAlign.right,
-                                      ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => InfoScreen(
-                                        snapshot.data.movies[index])),
+                          )
+                        : ListView.builder(
+                            itemCount: this.superSaveMovies.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: GestureDetector(
+                                  onDoubleTap: () {
+                                    superSaveMovies[index].saveForLater();
+                                    final snackBar = SnackBar(
+                                        content: Text("Saved for Later"));
+                                    Scaffold.of(context).showSnackBar(snackBar);
+                                    print("double tapped");
+                                  },
+                                  child: ListTile(
+                                    title: Text(superSaveMovies[index].title),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => InfoScreen(
+                                                superSaveMovies[index])),
+                                      );
+                                    },
+                                  ),
+                                ),
                               );
-                            },
-                          ));
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text("Failure");
-                    }
-                    print("B");
-                    return CircularProgressIndicator();
-                  })
-              : this.superSaveMovies.isEmpty
-                  ? Text(
-                      "No Movies Saved Yet",
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          ),
-                    )
-                  : ListView.builder(
-                      itemCount: this.superSaveMovies.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(superSaveMovies[index].title),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        InfoScreen(superSaveMovies[index])),
-                              );
-                            },
-                          ),
-                        );
-                      })),
+                            })),
+          ),
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              child: Text("Filters"),
-              decoration: BoxDecoration(
-                color: Colors.blue,
+            Container(
+              height: 100,
+              child: DrawerHeader(
+                child: Text(
+                  "Filters",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontFamily: 'Montserrat',
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
               ),
             ),
             ExpansionTile(

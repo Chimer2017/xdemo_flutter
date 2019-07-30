@@ -28,6 +28,10 @@ class Movie {
     return this.savedForLater;
   }
 
+  String getTitle() {
+    return this.title;
+  }
+
 	// factory Movie.createMovie(String prodID,String title,String desc,String rating,String genre, String producers,String studio,String releaseYear) {
   //   return Movie(
   //     prodID: prodID,

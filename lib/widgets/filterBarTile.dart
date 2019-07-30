@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:flutter/widgets.dart';
-import '../dash.dart';
 
 class FilterBarTile extends StatefulWidget {
 
