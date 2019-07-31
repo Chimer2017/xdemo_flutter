@@ -4,33 +4,19 @@ import 'package:flutter/widgets.dart';
 import 'Movie.dart';
 
 class Search extends StatefulWidget {
-  List<Movie> items;
+  TextEditingController controller;
+  String filter;
 
-  Search({Key key, this.items}) : super(key: key);
+  Search({Key key,this.filter, this.controller}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => SearchState();
 }
 
 class SearchState extends State<Search> {
-  TextEditingController controller = new TextEditingController();
+  
 
   String filter;
-
-  @override
-  void initState() {
-    controller.addListener(() {
-      setState(() {
-        filter = controller.text;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +28,7 @@ class SearchState extends State<Search> {
           ),
           new TextField(
             decoration: new InputDecoration(labelText: "Search a movie!"),
-            controller: controller,
-          ),
-          new Expanded(
-            child: new ListView.builder(
-              itemCount: /*widget.items.length*/10,
-              itemBuilder: (BuildContext context, int index) {
-                return filter == null
-                    ? new Card(child: new Text(widget.items[index].getTitle()))
-                    : widget.items[index].getTitle().contains(filter)
-                        ? new Card(
-                            child: new Text(widget.items[index].getTitle()))
-                        : new Container();
-              },
-            ),
+            controller: widget.controller,
           ),
         ],
       ),

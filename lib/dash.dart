@@ -1,8 +1,10 @@
 import 'dart:core';
 import 'dart:core' as prefix0;
+import 'dart:ui' as prefix1;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:xdemo_mobile_example/helper.dart';
 import 'package:xdemo_mobile_example/widgets/FilterTile.dart';
 import 'package:xdemo_mobile_example/widgets/Search.dart';
 import 'package:xdemo_mobile_example/widgets/filterBarTile.dart';
@@ -57,11 +59,12 @@ class TableState extends State<Table> {
     'Animation',
     'Fantasy'
   ];
-  List<FilterBarTile> myFilters = <FilterBarTile>[];
+  List<String> myFilters = <String>[];
   List<FilterTile> genreFilters = <FilterTile>[];
   List<FilterTile> ratingFilters = <FilterTile>[];
   TextEditingController controller = TextEditingController();
-  List<String> currentFilters = new List<String>();
+  List<FilterTile> currentFilters = new List<FilterTile>();
+  List<String> currentFilterStr = new List<String>();
   String searchFilter;
 
   @override
@@ -87,31 +90,50 @@ class TableState extends State<Table> {
     fillFilters(this.ratings, "rating", this.ratingFilters);
   }
 
+   _updateMyFilters(int index) {
+     print("Im here bruh! Length:  " + myFilters.length.toString());
+     print(index.toString());
+     myFilters.removeAt(index);
+     
+     setState(() {
+       movies = fetchFilteredCollection(Helper.createFilterQuery(currentFilterStr));
+     });
+  }
   _updateTableState(String qry) {
-    currentFilters.add(qry);
+    currentFilterStr.add(qry);
+    print(this.toString());
     // Next we are going to build the qry
-    var temp = "";
-    for (int i = 0; i < currentFilters.length - 1; i++) {
-      temp += currentFilters[i] + " AND ";
-    }
-    temp += currentFilters[currentFilters.length - 1];
-    print(temp);
+    // var temp = "";
+    // for (int i = 0; i < currentFilters.length - 1; i++) {
+    //   temp += currentFilterStr[i] + " AND ";
+    // }
+    // temp += currentFilterStr[currentFilterStr.length - 1];
+    // print(temp);
+    print(Helper.createFilterQuery(currentFilterStr));
+    myFilters.add(qry);
+    print("---------------------");
 
     setState(() {
-      //myFilters.add(new FilterBarTile(filter));
-      movies = fetchFilteredCollection(temp);
-
+      movies = fetchFilteredCollection(Helper.createFilterQuery(currentFilterStr));
       Navigator.pop(context);
     });
+
+    print("---------------------");
   }
+
+ 
 
   void fillFilters(
       List<String> options, String type, List<FilterTile> filterList) {
     options.forEach((f) {
       filterList.add(new FilterTile(
           filter: f,
+          uniKey: UniqueKey(),
+          type: type,
           qryFilter: "$type = '$f'",
-          parentAction: _updateTableState));
+          parentAction: _updateTableState
+          )
+        );
     });
   }
 
@@ -152,16 +174,45 @@ class TableState extends State<Table> {
       ),
       body: Column(
         children: <Widget>[
-          //   Expanded(
-          //   child: search,
-          //   // new Search(
-          //   //   items: allMovies,
-          //   // ),
-          // ),
-          new TextField(
-            decoration: new InputDecoration(labelText: "Search a movie!"),
-            controller: controller,
-          ),
+          new Search(filter: searchFilter, controller: controller),
+          Container(
+              height: myFilters.isEmpty ? 0 : 70,
+              width: 500,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: myFilters.isEmpty
+                  ? Container(
+                      // height: 200.0,
+                      // child: ListView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   children: myFilters,
+                      // ),
+                    )
+                  : Container(
+                      // margin: EdgeInsets.symmetric(vertical: 20.0),
+                      height: 200.0,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: myFilters.length,
+                        itemBuilder: (context,index) {
+                          return new FilterBarTile(
+                            filter: myFilters[index],
+                            parentAction: _updateMyFilters,
+                            index: index,
+                          );
+                        },
+
+                        ),
+                      ),
+                    ),
+              // new SizedBox(
+              //     child: ListView(
+              //       scrollDirection: Axis.horizontal,
+              //       children: myFilters,
+              //     ),
+              //   ),
           Expanded(
             // height: 60,
             child: Center(
