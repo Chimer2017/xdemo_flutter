@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'dart:core' as prefix0;
-import 'dart:ui' as prefix1;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -45,6 +44,9 @@ class TableState extends State<Table> {
   List<Movie> saveMovies;
   List<Movie> superSaveMovies = new List();
   bool firstLoadStatus = true;
+  bool init = true;
+
+  ////Options for filter
   List<String> ratings = ["G", "PG", "PG13", "R", "NR"];
   List<String> genres = [
     'Romantic Comedy',
@@ -59,9 +61,15 @@ class TableState extends State<Table> {
     'Animation',
     'Fantasy'
   ];
+  List<String> studios;
+  List<String> years;
+
   List<String> myFilters = <String>[];
   List<FilterTile> genreFilters = <FilterTile>[];
   List<FilterTile> ratingFilters = <FilterTile>[];
+  List<FilterTile> studioFilters = <FilterTile>[];
+  List<FilterTile> yearFilters = <FilterTile>[];
+
   TextEditingController controller = TextEditingController();
   List<FilterTile> currentFilters = new List<FilterTile>();
   List<String> currentFilterStr = new List<String>();
@@ -88,6 +96,8 @@ class TableState extends State<Table> {
   TableState() {
     fillFilters(this.genres, "genre", this.genreFilters);
     fillFilters(this.ratings, "rating", this.ratingFilters);
+    // fillFilters(this.studios, "studio", this.studioFilters);
+    // fillFilters((this.years, "theaterdate", this.yearFilters);
   }
 
   _updateMyFilters(String filter) {
@@ -97,13 +107,12 @@ class TableState extends State<Table> {
     myFilters = Helper.createCurrentFilterList();
     currentFilterStr = []..addAll(myFilters);
 
-
-     print("myFilters remove");
+    print("myFilters remove");
     print("****---------------------");
     myFilters.forEach((f) {
       print(f);
     });
-     print("****---------------------");
+    print("****---------------------");
 
     setState(() {
       if (myFilters.isEmpty) {
@@ -122,25 +131,23 @@ class TableState extends State<Table> {
     currentFilterStr.forEach((f) {
       print(f);
     });
-     print("**---------------------\n");
+    print("**---------------------\n");
 
     Helper.updateFilters(currentFilterStr);
     // print(Helper.createFilterQuery());
     myFilters = Helper.createCurrentFilterList();
 
-     print("myFilters add");
+    print("myFilters add");
     print("****---------------------");
     myFilters.forEach((f) {
       print(f);
     });
-     print("****---------------------");
-  
+    print("****---------------------");
 
     setState(() {
       movies = fetchFilteredCollection(Helper.createFilterQuery());
       Navigator.pop(context);
     });
-
   }
 
   void fillFilters(
@@ -240,6 +247,12 @@ class TableState extends State<Table> {
                           if (snapshot.hasData) {
                             this.allMovies = snapshot.data.getMovies();
                             this.saveMovies = snapshot.data.getSavedMovies();
+                            if (init) {
+                              fillFilters(snapshot.data.getStudioFilters(),"studio", this.studioFilters);
+                              fillFilters(snapshot.data.getYearFilters(), "theaterdate", this.yearFilters);
+                              init = false;
+                            }
+
                             for (var i = 0; i < saveMovies.length; i++) {
                               if (!this
                                   .superSaveMovies
@@ -391,6 +404,14 @@ class TableState extends State<Table> {
             ExpansionTile(
               title: Text("Genre"),
               children: this.genreFilters,
+            ),
+            ExpansionTile(
+              title: Text("Studio"),
+              children: this.studioFilters,
+            ),
+            ExpansionTile(
+              title: Text("Release Year"),
+              children: this.yearFilters,
             ),
           ],
         ),
