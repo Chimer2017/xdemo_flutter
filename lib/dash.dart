@@ -45,6 +45,7 @@ class TableState extends State<Table> {
   List<Movie> superSaveMovies = new List();
   bool firstLoadStatus = true;
   bool init = true;
+  double filterBarHeight = 70;
 
   ////Options for filter
   List<String> ratings = ["G", "PG", "PG13", "R", "NR"];
@@ -199,9 +200,9 @@ class TableState extends State<Table> {
       ),
       body: Column(
         children: <Widget>[
-          new Search(filter: searchFilter, controller: controller),
+          tableDisplayAll ? new Search(filter: searchFilter, controller: controller) : new Container(),
           Container(
-            height: myFilters.isEmpty ? 0 : 70,
+            height: myFilters.isEmpty ? 0 : filterBarHeight,
             width: 500,
             decoration: BoxDecoration(
               color: Colors.blue,
