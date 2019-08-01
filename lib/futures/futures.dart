@@ -34,8 +34,6 @@ Future<Collection> fetchFilteredCollection(String query) async {
   print('http://den-vm-eng142.rocketsoftware.com:7171/Xdemo/Products?select=' + query);
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON.
-    print(response.statusCode);
-    print(response.body);
     return Collection.fromJSON(json.decode(response.body));
   } else {
     // If that call was not successful, throw an error.

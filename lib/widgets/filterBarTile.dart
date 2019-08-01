@@ -6,7 +6,7 @@ class FilterBarTile extends StatefulWidget {
   final String filter;
   final int index;
 
-  final ValueChanged<int> parentAction;
+  final ValueChanged<String> parentAction;
   // FilterBarTile(String filter) {
   //   this.filter = filter;
   // }
@@ -46,7 +46,7 @@ class FilterBarTileState extends State<FilterBarTile> {
           padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
           onPressed: () {
             print("Ive been pressed");
-            widget.parentAction(widget.index);
+            widget.parentAction(widget.filter);
           },
         ),
       ),
