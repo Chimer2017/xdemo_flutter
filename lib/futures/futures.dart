@@ -37,7 +37,7 @@ Future<Collection> fetchFilteredCollection(String query) async {
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON.
     return Collection.fromJSON(json.decode(response.body));
-  } else {
+  } else {echo "my text" | tee -a *.php
     // If that call was not successful, throw an error.
     throw Exception('Failed to load post');
   }
