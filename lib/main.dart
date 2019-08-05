@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dash.dart';
+import 'globals.dart' as globals;
 
 void main() => runApp(MyApp());
 
@@ -30,8 +31,10 @@ class _MyHomePageState extends State<MyHomePage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat',fontSize:20.0);
   final myControllerEmail = TextEditingController();
   final myControllerPassword = TextEditingController();
+  final myControllerPort = TextEditingController();
   String email;
   String password;
+  String port;
 
   @override
   void dispose() {
@@ -90,6 +93,15 @@ class _MyHomePageState extends State<MyHomePage> {
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
         );
+        final portField = TextField(
+          style: style,
+          controller: myControllerPort,
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+              hintText: "Port Number",
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+        );
         final loginButon = Material(
           elevation: 5.0,
           borderRadius: BorderRadius.circular(30.0),
@@ -100,6 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               this.email = myControllerEmail.text;
               this.password = myControllerPassword.text;
+              this.port = myControllerPort.text;
+              globals.port = int.tryParse(this.port);
+              print("Port: " + globals.port.toString());
+
 
               if (isAdmin()) {
 
@@ -144,6 +160,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     SizedBox(height: 45.0),
+                    portField,
+                    SizedBox(height: 25.0),
                     emailField,
                     SizedBox(height: 25.0),
                     passwordField,

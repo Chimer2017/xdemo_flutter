@@ -19,9 +19,18 @@ import 'widgets/Search.dart';
 class DashBoardLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MVoovies',
-      home: Table(),
+    // return MaterialApp(
+    //   title: 'MVoovies',
+    //   home: Table(),
+    // );
+    return new WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: MaterialApp(
+        title: 'MVoovies',
+        home: Table(),
+      ),
     );
   }
 }
@@ -200,38 +209,42 @@ class TableState extends State<Table> {
       ),
       body: Column(
         children: <Widget>[
-          tableDisplayAll ? new Search(filter: searchFilter, controller: controller) : new Container(),
-          Container(
-            height: myFilters.isEmpty ? 0 : filterBarHeight,
-            width: 500,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: myFilters.isEmpty
-                ? Container(
-                    // height: 200.0,
-                    // child: ListView(
-                    //   scrollDirection: Axis.horizontal,
-                    //   children: myFilters,
-                    // ),
-                    )
-                : Container(
-                    // margin: EdgeInsets.symmetric(vertical: 20.0),
-                    height: 200.0,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: myFilters.length,
-                      itemBuilder: (context, index) {
-                        return new FilterBarTile(
-                          filter: myFilters[index],
-                          parentAction: _updateMyFilters,
-                          index: index,
-                        );
-                      },
-                    ),
+          tableDisplayAll
+              ? new Search(filter: searchFilter, controller: controller)
+              : new Container(),
+          tableDisplayAll
+              ? Container(
+                  height: myFilters.isEmpty ? 0 : filterBarHeight,
+                  width: 500,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
                   ),
-          ),
+                  child: myFilters.isEmpty
+                      ? Container(
+                          // height: 200.0,
+                          // child: ListView(
+                          //   scrollDirection: Axis.horizontal,
+                          //   children: myFilters,
+                          // ),
+                          )
+                      : Container(
+                          // margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 200.0,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: myFilters.length,
+                            itemBuilder: (context, index) {
+                              return new FilterBarTile(
+                                filter: myFilters[index],
+                                parentAction: _updateMyFilters,
+                                index: index,
+                              );
+                            },
+                          ),
+                        ),
+                )
+              : new Container(),
           // new SizedBox(
           //     child: ListView(
           //       scrollDirection: Axis.horizontal,
@@ -249,8 +262,10 @@ class TableState extends State<Table> {
                             this.allMovies = snapshot.data.getMovies();
                             this.saveMovies = snapshot.data.getSavedMovies();
                             if (init) {
-                              fillFilters(snapshot.data.getStudioFilters(),"studio", this.studioFilters);
-                              fillFilters(snapshot.data.getYearFilters(), "theaterdate", this.yearFilters);
+                              fillFilters(snapshot.data.getStudioFilters(),
+                                  "studio", this.studioFilters);
+                              fillFilters(snapshot.data.getYearFilters(),
+                                  "theaterdate", this.yearFilters);
                               init = false;
                             }
 
@@ -336,9 +351,29 @@ class TableState extends State<Table> {
                               },
                             );
                           } else if (snapshot.hasError) {
-                            return Text("Failure");
+                            return Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                height: MediaQuery.of(context).size.width / 2,
+                                decoration: BoxDecoration(
+                                  color: Colors.lightBlue,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                padding: EdgeInsets.fromLTRB(10, 50, 10, 0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.mood_bad,
+                                    ),
+                                    Text(
+                                      "Sorry, we couldn't find any movies that fit your criteria!",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           }
-                          print("B");
                           return CircularProgressIndicator();
                         })
                     : this.superSaveMovies.isEmpty
@@ -410,10 +445,10 @@ class TableState extends State<Table> {
               title: Text("Studio"),
               children: this.studioFilters,
             ),
-            ExpansionTile(
-              title: Text("Release Year"),
-              children: this.yearFilters,
-            ),
+            // ExpansionTile(
+            //   title: Text("Release Year"),
+            //   children: this.yearFilters,
+            // ),
           ],
         ),
       ),

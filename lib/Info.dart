@@ -115,30 +115,3 @@ class InfoScreenState extends State<InfoScreen> {
   Movie movie;
 }
 
-// var titleVal;
-
-//   InfoScreen(String val) {
-//     titleVal = val;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           "More Info",
-//         ),
-//       ),
-//       body: Column(
-//         children: <Widget>[
-//           Text(titleVal),
-//           RaisedButton(
-//             child: Text("Go Back"),
-//             onPressed: () {
-//               Navigator.pop(context);
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }

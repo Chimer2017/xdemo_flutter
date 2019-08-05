@@ -6,7 +6,7 @@ class Helper {
     if (filter.contains('rating')) rating = null;
     if (filter.contains('genre')) genre = null;
     if (filter.contains('studio')) studio = null;
-    if (filter.contains('year')) year = null;
+    if (filter.contains('theaterdate')) year = null;
   }
 
   static createCurrentFilterList() {
@@ -32,7 +32,7 @@ class Helper {
     // if (currentFilterStr == null || currentFilterStr.isNotEmpty) {
     //       currentFilterStr.clear();
     // }
-    
+
     createCurrentFilterList();
     var temp = "";
     for (int i = 0; i < currentFilterStr.length - 1; i++) {
