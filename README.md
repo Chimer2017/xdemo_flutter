@@ -11,7 +11,7 @@ A few resources to get you started if this is your first Flutter project:
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
+For help getting started with Flutter, view the
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
@@ -30,6 +30,13 @@ This app depends on the Flutter SDK. The Flutter team has developed amazing onli
 4. Run `flutter run`. This will start the app on the simulator or device of choice. However, this version is not deployable to app stores.
 
 ### Application Structure
+
+* lib/ - This folder contains all dart classes and widget definitions for the application.
+* ios/ & android/ - These folder contains operating system specific bundles to run the Flutter application on either platform.
+* pubspec.yaml - This file contains all the dependicies for the application.
+* main.dart - This file is the starting point of the app. Location of the main function.
+
+
 
 
 
