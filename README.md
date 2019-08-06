@@ -17,6 +17,7 @@ For help getting started with Flutter, view the
 samples, guidance on mobile development, and a full API reference.
 
 ### Dependencies
+*Flutter SDK - This app depends on the Flutter SDK. The Flutter team has developed amazing online documentation. In order to get the MVoovies mobile app up and running, please follow the Flutter installion guide. Complete up to step 3, and then comeback to this wiki continue wth MVoovies specific steps.[Click Here - Flutter Install Guide](https://flutter.dev/docs/get-started/install)
 
 * MultiValue Integration Server Community Edition - If this is not installed on your local machine, please follow the installation guide found [here](#)
 
@@ -26,7 +27,7 @@ samples, guidance on mobile development, and a full API reference.
 
 This app depends on the Flutter SDK. The Flutter team has developed amazing online documentation. In order to get the MVoovies mobile app up and running, please follow the Flutter installion guide. Complete up to step 3, and then comeback to this wiki continue wth MVoovies specific steps.
 
-[Click Here - Flutter Install Guide](https://flutter.dev/docs/get-started/install)
+
 
 ### Running a Local Instance of the Application
 
