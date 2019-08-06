@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dash.dart';
-import 'globals.dart' as globals;
+import 'config.dart' as config;
 
 void main() => runApp(MyApp());
 
@@ -113,8 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
               this.email = myControllerEmail.text;
               this.password = myControllerPassword.text;
               this.port = myControllerPort.text;
-              globals.port = int.tryParse(this.port);
-              print("Port: " + globals.port.toString());
+              config.port = int.tryParse(this.port);
+              print("Port: " + config.port.toString());
 
 
               if (isAdmin()) {
