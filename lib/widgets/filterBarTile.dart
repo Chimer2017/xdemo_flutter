@@ -4,7 +4,13 @@ import 'package:flutter/widgets.dart';
 
 /*
 This widget defines the structure and look and feel of a filter bar tile. When a filter is pressed, a bar on the main screen appears with all active filters.
-These filters are displayed using this widget.
+These filters are displayed using this widget. 
+
+This is a statefulwidget. Stateful widgets are dynamic in nature and can be rebuilt on command.
+*/
+
+/*
+Initial constructor. Defines model for stateful widget.
 */
 class FilterBarTile extends StatefulWidget {
   final String filter;
@@ -15,9 +21,11 @@ class FilterBarTile extends StatefulWidget {
   //   this.filter = filter;
   // }
 
+  //Defining parameters for the widget
   const FilterBarTile({Key key, this.filter, this.parentAction, this.index})
       : super(key: key);
 
+  //Creates instance of widge, which will be rebuilt with state chnages
   @override
   State<StatefulWidget> createState() {
     return FilterBarTileState();
@@ -27,7 +35,9 @@ class FilterBarTile extends StatefulWidget {
     return this.filter;
   }
 }
-
+/*
+Constructor for actual state based widget.
+*/
 class FilterBarTileState extends State<FilterBarTile> {
   @override
   Widget build(BuildContext context) {
@@ -57,3 +67,4 @@ class FilterBarTileState extends State<FilterBarTile> {
       );
   }
 }
+// © 2019 Rocket Software, Inc. or its affiliates. All Rights Reserved

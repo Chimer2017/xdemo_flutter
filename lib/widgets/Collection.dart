@@ -79,3 +79,4 @@ class Collection {
 
   List<Movie> movies = new List();
 }
+// © 2019 Rocket Software, Inc. or its affiliates. All Rights Reserved

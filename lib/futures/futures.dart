@@ -55,4 +55,4 @@ Future<Collection> fetchFilteredCollection(String query) async {
     // If that call was not successful, throw an error.
     throw Exception('Failed to load post');
   }
-}
+}// © 2019 Rocket Software, Inc. or its affiliates. All Rights Reserved

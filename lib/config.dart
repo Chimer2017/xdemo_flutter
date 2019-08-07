@@ -13,4 +13,4 @@ bool isLoggedIn = true;
 int port = 7171;
 
 //Default endpoint URI for MVIS server
-String endPointURI = 'http://den-vm-eng142.rocketsoftware.com:';
+String endPointURI = 'http://den-vm-eng142.rocketsoftware.com:';// © 2019 Rocket Software, Inc. or its affiliates. All Rights Reserved

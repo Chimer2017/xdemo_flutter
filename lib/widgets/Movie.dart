@@ -26,31 +26,21 @@ class Movie {
     this.releaseYear= releaseYear;
   }
 
+  //setter
   void saveForLater() {
     savedForLater = true;
   }
 
+  //getter
   bool isSavedForLater() {
     return this.savedForLater;
   }
-
+  //getter
   String getTitle() {
     return this.title;
   }
 
-	// factory Movie.createMovie(String prodID,String title,String desc,String rating,String genre, String producers,String studio,String releaseYear) {
-  //   return Movie(
-  //     prodID: prodID,
-  //     title: title,
-  //     desc: desc,
-  //     rating: rating,
-  //     genre: genre,
-  //     producers: producers,
-  //     studio: studio,
-  //     releaseYear: releaseYear
-  //   );
-  // }
 
 
 
-}
+}// © 2019 Rocket Software, Inc. or its affiliates. All Rights Reserved

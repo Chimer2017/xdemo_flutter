@@ -39,18 +39,16 @@ class DashBoardLayout extends StatelessWidget {
     );
   }
 }
-
+/*
+This is a statefulwidget. Stateful widgets are dynamic in nature and can be rebuilt on command.
+Initial constructor. Defines model for stateful widget, in this case the actual table of Movie data.
+*/
 class Table extends StatefulWidget {
-  // Future<Collection> movies;
-
-  // Table.futureConst() {
-  //   this.movies = fetchCollection();
-  // }
 
   @override
   TableState createState() => TableState();
 }
-
+//Constructor for actual stateful Table widget
 class TableState extends State<Table> {
   bool tableDisplayAll = true;
   Future<Collection> movies = fetchCollection();
@@ -90,6 +88,7 @@ class TableState extends State<Table> {
   List<String> currentFilterStr = new List<String>();
   String searchFilter;
 
+  //Sets variables and states on initial render
   @override
   void initState() {
     controller.addListener(() {
@@ -100,6 +99,7 @@ class TableState extends State<Table> {
     });
   }
 
+  //Managing state and data when widget is being disposed of and rebuilt
   @override
   void dispose() {
     controller.dispose();
@@ -488,3 +488,4 @@ class TableState extends State<Table> {
     );
   }
 }
+// © 2019 Rocket Software, Inc. or its affiliates. All Rights Reserved

@@ -119,3 +119,4 @@ class InfoScreenState extends State<InfoScreen> {
   Movie movie;
 }
 
+// © 2019 Rocket Software, Inc. or its affiliates. All Rights Reserved
