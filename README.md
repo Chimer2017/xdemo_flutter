@@ -16,6 +16,8 @@ For help getting started with Flutter, view the
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+A blog post and video tutorial of the application can be found [here](#)
+
 ### Dependencies
 
 * MultiValue Integration Server Community Edition - If this is not installed on your local machine, please follow the installation guide found [here](#)
@@ -40,12 +42,14 @@ This app depends on the Flutter SDK. The Flutter team has developed amazing onli
 
 * lib/ - This folder contains all dart classes and widget definitions for the application.
 * ios/ & android/ - These folder contains operating system specific bundles to run the Flutter application on either platform.
+* .idea/ & build/ - These folders are automatically generatd with Flutter projects. For this application, no need to edit anything inside of them.
 * pubspec.yaml - This file contains all the dependicies for the application.
 * main.dart - This file is the starting point of the app. Location of the main function.
 
+
 ### Configuration
 
-The demo is by default set to work with a local copy of MVIS communit edition and the default port number. If you wish to configure your MVIS server or run it on premise or in the cloud, the demo will also need to be updated. There is the a "config.js" file in the root folder that contains the default port number and endpoint URI. Configure these to connect the demo application with your MVIS server
+The demo is by default set to work with a local copy of MVIS communit edition and the default port number. If you wish to configure your MVIS server or run it on premise or in the cloud, the demo will also need to be updated. There is the a "config.js" file in the widgets folder that contains the default port number and endpoint URI. Configure these to connect the demo application with your MVIS server
 
 
 

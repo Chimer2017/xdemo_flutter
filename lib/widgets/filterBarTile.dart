@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:flutter/widgets.dart';
 
+/*
+This widget defines the structure and look and feel of a filter bar tile. When a filter is pressed, a bar on the main screen appears with all active filters.
+These filters are displayed using this widget.
+*/
 class FilterBarTile extends StatefulWidget {
   final String filter;
   final int index;

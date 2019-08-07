@@ -1,5 +1,6 @@
-import 'package:xdemo_mobile_example/widgets/FilterTile.dart';
-
+/*
+This is a helper class. Contains functions and methods used by multiple widgets and classes.
+*/
 class Helper {
 
   static void updateCurrentFilters(String filter) {

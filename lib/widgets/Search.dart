@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'Movie.dart';
+
+/*
+
+This class defines the widget used for the look and feel of the search bar.
+It has a call back function attached to send over data in the form of inputted text.
+
+*/
 
 class Search extends StatefulWidget {
   TextEditingController controller;

@@ -1,3 +1,9 @@
+
+/*
+This class defines a model for a Movie. This class is constructed by the Collection class.
+*/
+
+
 class Movie {
   String prodID;
   String title;

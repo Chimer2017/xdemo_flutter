@@ -16,6 +16,11 @@ import 'widgets/filterBarTile.dart';
 import 'futures/futures.dart';
 import 'widgets/Search.dart';
 
+/*
+This is the main page of the application. This screen renders the data coming from MVIS, the filter options and filter bar, and the search
+bar. This acts as the main function and controller for the application and is the location for all callback functions used in other
+widgets.
+*/
 class DashBoardLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -106,24 +111,13 @@ class TableState extends State<Table> {
   TableState() {
     fillFilters(this.genres, "genre", this.genreFilters);
     fillFilters(this.ratings, "rating", this.ratingFilters);
-    // fillFilters(this.studios, "studio", this.studioFilters);
-    // fillFilters((this.years, "theaterdate", this.yearFilters);
   }
 
+  //Callback function for updating active filters and rendering these filters on the filter bar.
   _updateMyFilters(String filter) {
-    print("Im here bruh! Length:  " + myFilters.length.toString());
-    print(filter);
     Helper.updateCurrentFilters(filter);
     myFilters = Helper.createCurrentFilterList();
     currentFilterStr = []..addAll(myFilters);
-
-    print("myFilters remove");
-    print("****---------------------");
-    myFilters.forEach((f) {
-      print(f);
-    });
-    print("****---------------------");
-
     setState(() {
       if (myFilters.isEmpty) {
         movies = fetchCollection();
@@ -134,6 +128,7 @@ class TableState extends State<Table> {
     });
   }
 
+  //Callback function for updating table rows by fetching filtered data from MVIS
   _updateTableState(String qry) {
     currentFilterStr.add(qry);
     print("current Filter Str");
@@ -160,6 +155,9 @@ class TableState extends State<Table> {
     });
   }
 
+  /*
+  Populates filter options in the filter drop down menu.
+  */
   void fillFilters(
       List<String> options, String type, List<FilterTile> filterList) {
     options.forEach((f) {
@@ -172,6 +170,9 @@ class TableState extends State<Table> {
     });
   }
 
+  /*
+  Function that implements logic for the search bar
+  */
   void filterSearchResults(String query) {
     List<Movie> dummySearchList = List<Movie>();
     dummySearchList.addAll(this.allMovies);
@@ -192,9 +193,11 @@ class TableState extends State<Table> {
     }
   }
 
+  //Renders look,content, and feel of the data table.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //This section renders the appbar on the top of the screen
       appBar: AppBar(
         // automaticallyImplyLeading: false,
         leading: Builder(
@@ -207,6 +210,7 @@ class TableState extends State<Table> {
         ),
         title: Text("MVoovies"),
       ),
+      //This section builds and renders the data table with movie data
       body: Column(
         children: <Widget>[
           tableDisplayAll
@@ -220,15 +224,8 @@ class TableState extends State<Table> {
                     color: Colors.blue,
                   ),
                   child: myFilters.isEmpty
-                      ? Container(
-                          // height: 200.0,
-                          // child: ListView(
-                          //   scrollDirection: Axis.horizontal,
-                          //   children: myFilters,
-                          // ),
-                          )
+                      ? Container()
                       : Container(
-                          // margin: EdgeInsets.symmetric(vertical: 20.0),
                           height: 200.0,
                           width: MediaQuery.of(context).size.width,
                           child: ListView.builder(
@@ -245,12 +242,6 @@ class TableState extends State<Table> {
                         ),
                 )
               : new Container(),
-          // new SizedBox(
-          //     child: ListView(
-          //       scrollDirection: Axis.horizontal,
-          //       children: myFilters,
-          //     ),
-          //   ),
           Expanded(
             // height: 60,
             child: Center(
@@ -289,7 +280,6 @@ class TableState extends State<Table> {
                                               .toString(),
                                           textAlign: TextAlign.left,
                                         ),
-                                        //subtitle: Text(snapshot.data.movies[index].studio.toString()),
                                         trailing: snapshot.data.movies[index]
                                                 .rating.isNotEmpty
                                             ? Text(
@@ -322,7 +312,6 @@ class TableState extends State<Table> {
                                                   .toString(),
                                               textAlign: TextAlign.left,
                                             ),
-                                            //subtitle: Text(snapshot.data.movies[index].studio.toString()),
                                             trailing: snapshot
                                                     .data
                                                     .movies[index]
@@ -414,6 +403,7 @@ class TableState extends State<Table> {
           ),
         ],
       ),
+      //This section renders the swipable side menu including all filters and filter options
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -452,6 +442,7 @@ class TableState extends State<Table> {
           ],
         ),
       ),
+      //This section renders the bottom navigation bar
       bottomNavigationBar: BottomAppBar(
           color: Colors.blue,
           child: Row(

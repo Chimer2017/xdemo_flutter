@@ -1,4 +1,6 @@
-import 'package:xdemo_mobile_example/widgets/FilterTile.dart';
+/*
+This class defines a collection of Movie objects. 
+*/
 
 import 'Movie.dart';
 
@@ -21,10 +23,17 @@ class Collection {
     }
   }
 
+  /*
+  Returns underlying data structure. This is a security risk, however since the Colletion is wrapped in a future class
+  in the application, this becomes necessary to expose data set.
+  */
   List<Movie> getMovies() {
     return this.movies;
   }
 
+  /*
+  Returns list of movies that have been tagged as saved.
+  */
   List<Movie> getSavedMovies() {
     List<Movie> temp = new List<Movie>();
     for (var i = 0; i < movies.length; i++) {
@@ -32,10 +41,12 @@ class Collection {
         temp.add(movies[i]);
       }
     }
-
     return temp;
   }
 
+  /*
+  Returns a set of all studios found in the collection in the form of a list.
+  */
   List<String> getStudioFilters() {
     List<String> studios = new List<String>();
     movies.forEach((el) {
@@ -46,6 +57,9 @@ class Collection {
     return studios.toSet().toList();
   }
 
+  /*
+  Returns a set of all release years found in the collection in the form of a list.
+  */
   List<String> getYearFilters() {
     List<String> years = new List<String>();
     List<int> temp = new List<int>();
@@ -58,9 +72,7 @@ class Collection {
     temp.forEach((f) {
       years.add(f.toString());
     });
-
     return years.toSet().toList();
-
   }
 
   // ----------------Fields-----------------

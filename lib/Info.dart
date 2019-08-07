@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'widgets/Movie.dart';
-
+/*
+This class defines a widget that represents the Movie Information page. When a user taps on a table row from the main page, a new page is
+rendered that shows specific information on that movie. 
+*/
 class InfoScreen extends StatefulWidget {
   Movie movie;
 
@@ -29,6 +32,7 @@ class InfoScreenState extends State<InfoScreen> {
   InfoScreenState(Movie movie) {
     this.movie = movie;
   }
+  //Build function. Renders look and feel
   @override
   Widget build(BuildContext context) {
     return Scaffold(
