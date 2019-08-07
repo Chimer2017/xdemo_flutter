@@ -3,6 +3,7 @@ This is a helper class. Contains functions and methods used by multiple widgets 
 */
 class Helper {
 
+  //Updates class fields
   static void updateCurrentFilters(String filter) {
     if (filter.contains('rating')) rating = null;
     if (filter.contains('genre')) genre = null;
@@ -10,6 +11,7 @@ class Helper {
     if (filter.contains('theaterdate')) year = null;
   }
 
+  //Create a new list with all active filter values
   static createCurrentFilterList() {
     currentFilterStr = new List<String>();
     if (rating != null) {
@@ -29,6 +31,7 @@ class Helper {
 
   }
 
+  //create query string for MVIS based on class field values
   static String createFilterQuery() {
     // if (currentFilterStr == null || currentFilterStr.isNotEmpty) {
     //       currentFilterStr.clear();
@@ -50,6 +53,7 @@ class Helper {
   static String year;
   static List<String> currentFilterStr;
 
+  //resets all class fields
   static void nullifyAll() {
      rating = null;
       genre = null;
@@ -57,6 +61,7 @@ class Helper {
       year = null;
   }
 
+  //updates field values. Information coming from dashboard
   static void updateFilters(List<String> currentFilterStr) {
     nullifyAll();
     currentFilterStr.forEach((el) {

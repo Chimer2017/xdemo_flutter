@@ -4,6 +4,12 @@ import 'widgets/Movie.dart';
 /*
 This class defines a widget that represents the Movie Information page. When a user taps on a table row from the main page, a new page is
 rendered that shows specific information on that movie. 
+
+This is a statefulwidget. Stateful widgets are dynamic in nature and can be rebuilt on command.
+*/
+
+/*
+Initial object. Defines model for stateful widget.
 */
 class InfoScreen extends StatefulWidget {
   Movie movie;
@@ -16,6 +22,7 @@ class InfoScreen extends StatefulWidget {
   InfoScreenState createState() => InfoScreenState(this.movie);
 }
 
+//Acutal stateful widget class, that will be rebuilt with state changes
 class InfoScreenState extends State<InfoScreen> {
   TextStyle hStyle = TextStyle(
     fontFamily: 'Montserrat',
