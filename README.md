@@ -16,12 +16,12 @@ For help getting started with Flutter, view the
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-A blog post and video tutorial of the application can be found [here](#)
+A blog post and video tutorial of the application can be found [here](Placeholder for MVoovies mobile blog post and video)
 
 ### Dependencies
 * Flutter SDK - This app depends on the Flutter SDK. The Flutter team has developed amazing online documentation. In order to get the MVoovies mobile app up and running, please follow the Flutter installion guide. Complete up to step 3, and then comeback to this wiki continue wth MVoovies specific steps.[Click Here - Flutter Install Guide](https://flutter.dev/docs/get-started/install)
-* MultiValue Integration Server Community Edition - If this is not installed on your local machine, please follow the installation guide found [here](#)
-* UniVerse - If UniVerse is not installed on your machine, please follow the installation guide found [here](#)
+* MultiValue Integration Server Community Edition - If this is not installed on your local machine, please follow the installation guide found [here](Place holder for MultiValue Personal Edition Installation Guide)
+* UniVerse - If UniVerse is not installed on your machine, please follow the installation guide found [here](https://docs.rocketsoftware.com/nxt/gateway.dll/RKBnew20%2Funiverse%2Fprevious%20versions%2Fv11.2.3%2Funiverse_installguide_v1123.pdf)
 
 ### Running a Local Instance of the Application
 
